@@ -18,11 +18,16 @@ FotoFusion AI takes User Input as images and generates the following:
 
 ## Snapshots
 
- ![image](https://github.com/Spyrosigma/FotoFusion/assets/111422209/9468a63d-8b25-44ad-853d-9d3b31fcbcb0)
+![unnamed](https://github.com/Spyrosigma/FotoFusion/assets/111422209/0b01ded5-8a1f-446b-a6ce-db81796cd407)
 
 <br>
    
- ![image](https://github.com/Spyrosigma/FotoFusion/assets/111422209/4de7a579-4e0d-4eba-bb60-ab0d229bb5e4)
+![unnamed](https://github.com/Spyrosigma/FotoFusion/assets/111422209/ff9eff30-41f6-4218-b04f-631278ff76ab)
+
+
+
+
+ 
 
 <br> <br>
 
