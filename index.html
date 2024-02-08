@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="apple-touch-icon" sizes="180x180" href="/favicon_io/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon_io/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon_io/favicon-16x16.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500&family=Salsa&display=swap" rel="stylesheet">
+    <link rel="manifest" href="/favicon_io//site.webmanifest">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>FotoFusion</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+
+<body>
+    <header>FotoFusion</header>
+    <br> <br> <br>
+    <article>
+        <details id="info">
+            <summary><u> MUST READ !</u></summary>
+            <p> Since this model is based on GEMINI AI. Sometimes there is an error in generating
+                captions/story/content due to the following reasons: <br>
+                <li>You have not entered a valid API key.</li>
+                <li>The image you gave violates Google's norms and rules.</li>
+                <li>The image is mistakenly interpreted, or it is actually, as sexual content/violence / Intellectual
+                    Property Violations.</li>
+                <br><br>
+                JUST HARD REFRESH THE PAGE(Ctrl + F5) & It may work for that same image.
+            </p>
+        </details>
+        <br><br><br>
+        <form action="" method="post" id="userInput">
+            <label for="image">Upload Image (less than 3 MB): &nbsp;</label>
+            <input type="file" id="image" name="image" accept="image/*" class="upload">
+            <br>
+            <br>
+            <input type="submit" value="Generate &#x1F31F;" class="bn632-hover bn19">
+        </form>
+        <p id="process"></p>
+        <div class="output">
+            <div class="detaildiv">
+                <label for="detail">Information</label><br>
+                <textarea name="" id="detail"></textarea>
+            </div>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+            <div class="captiondiv">
+                <label for="caption">Caption for Insta <a href="https://www.instagram.com" target="_blank"><i
+                            class="fa fa-instagram" style="font-size:25px;color:red"></i></a></label> <br>
+                <textarea name="" id="caption"></textarea>
+            </div>
+        </div> <br> <br>
+        <div class="story">
+            <label for="story">Here's a Tale based on your photo!</label> <br> <br>
+            <textarea name="" id="story" cols="30" rows="10"></textarea>
+        </div>
+        <br>
+    </article>
+    <script type="importmap">
+      {
+        "imports": {
+          "@google/generative-ai": "https://esm.run/@google/generative-ai"
+        }
+      }
+    </script>
+    <script type="module">
+        import { GoogleGenerativeAI } from "@google/generative-ai";
+        const API_KEY = "AIzaSyCJ46Q8tBp6Ezna48zfS9lOLxNTWtthMRg"; // ← Put your Gemini-API key here
+        const genAI = new GoogleGenerativeAI(API_KEY);
+
+        async function fileToGenerativePart(file) {
+            const base64EncodedDataPromise = new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onloadend = () => resolve(reader.result.split(',')[1]);
+                reader.readAsDataURL(file);
+            });
+            return {
+                inlineData: { data: await base64EncodedDataPromise, mimeType: file.type },
+            };
+        }
+
+        async function run() {
+            document.getElementById("process").innerHTML = "Loading...";
+            const model = genAI.getGenerativeModel({ model: "gemini-pro-vision" });
+
+
+            const prompt = "What's in the pictures? Explain in at least 100 words. ";
+
+            const captionPrompt = "Generate 5 hilarious captions(Not more than 20 words) for Instagram posts based on the photo given. Use wordplay and puns. Play with exaggeration and absurdity. Insert emojis. "
+
+            const storyPrompt = "Generate a story based on the photo. If possible, you can also use Indian puns and proverbs relating them to the story. If people are present in the photo, Give them Indian names. Fill the story with suspense, energy, and spicy content. ";
+
+
+            const fileInputEl = document.querySelector("input[type=file]");
+            const imageParts = await Promise.all(
+                [...fileInputEl.files].map(fileToGenerativePart)
+            );
+
+            try {
+                const result = await model.generateContent([prompt, ...imageParts]);
+                const response = await result.response;
+                const text = response.text();
+                document.getElementById("detail").innerHTML = text;
+
+                const captionresult = await model.generateContent([captionPrompt, ...imageParts]);
+                const captionresponse = await captionresult.response;
+                const captiontext = captionresponse.text();
+                document.getElementById("caption").innerHTML = captiontext;
+
+                const storyresult = await model.generateContent([storyPrompt, ...imageParts]);
+                const storyresponse = await storyresult.response;
+                const storytext = storyresponse.text();
+                document.getElementById("story").innerHTML = storytext;
+            }
+            catch (error) {
+                alert(error.message);
+            }
+
+
+            document.getElementById("process").innerHTML = "Done <span style=\"color:green; font-size:large;\">&#10003<span>";
+
+        }
+        function validateFileSize() {
+            var fileInput = document.getElementById('image');
+            var maxSize = 3.0 * 1024 * 1024;
+            if (image.files.length === 0) {
+                alert("Please select an image !");
+                return 0; 
+            }
+            if (fileInput.files.length > 0) {
+                var fileSize = fileInput.files[0].size;
+
+                if (fileSize > maxSize) {
+                    alert('File size exceeds the limit of 3 MB. Please choose a smaller file.');
+                    fileInput.value = '';
+                    return 0;
+                }
+            }
+        }
+        document.getElementById("userInput").addEventListener("submit", function (event) {
+            event.preventDefault();
+            if (validateFileSize() != 0) {
+                document.getElementById("detail").innerHTML = "";
+                document.getElementById("caption").innerHTML = "";
+                document.getElementById("story").innerHTML = "";
+                run();
+            }
+        });
+    </script>
+    <br> <br>
+
+    <footer class="footer">
+        Made with <span style="color: red; font-size:30px;">&hearts;</span> by
+        <span>
+            <a href="https://www.github.com/SpyroSigma" target="_blank"
+                style="color: rgb(51, 255, 0); font-size:30px;">SpyroSigma</a>
+        </span>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+This favicon was generated using the following font:
+
+- Font Title: Yuji Hentaigana Akari
+- Font Author: Copyright 2021 The Yuji Project Authors (https://github.com/Kinutafontfactory/Yuji)
+- Font Source: http://fonts.gstatic.com/s/yujihentaiganaakari/v11/cY9bfiyVT0VB6QuhWKOrpr6z58lnb_zYFnLIRTzODYALaA.ttf
+- Font License: SIL Open Font License, 1.1 (http://scripts.sil.org/OFL))
