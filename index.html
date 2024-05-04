@@ -59,6 +59,8 @@
         </div>
         <br>
     </article>
+
+
     <script type="importmap">
       {
         "imports": {
@@ -68,7 +70,8 @@
     </script>
     <script type="module">
         import { GoogleGenerativeAI } from "@google/generative-ai";
-        const API_KEY = "AIzaSyCoIdSzzg5-YdDA2tWC-cG0wYbuJiTKcMI"; 
+        import { API_KEY } from "./apikey.js"
+        
         const genAI = new GoogleGenerativeAI(API_KEY);
 
         async function fileToGenerativePart(file) {
